@@ -7,3 +7,16 @@ from data import (
 )
 
 from backtesting import Backtester
+
+from strategies import (
+    BaseStrategy,
+    MaxSharpeStrategy,
+    MaxSortinoStrategy, 
+    MomentumStrategy,
+    RiskParityStrategy,
+    EqualWeightStrategy,
+    MeanVarianceOptimizationStrategy,
+    CvxPortfolioStrategy,
+    BlackLittermanMVO,
+    ValueAveragingStrategy,
+)
