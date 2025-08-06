@@ -63,7 +63,8 @@ strategies = {
     'BL':          BlackLittermanMVO(tickers, implied_weights=[0.25, 0.25, 0.25, 0.25]),
     'CVaR':        CVaRStrategy(tickers),
     'cvx':         CvxPortfolioStrategy(tickers),
-    'ValueAvg':    ValueAveragingStrategy(tickers)
+    'ValueAvg':    ValueAveragingStrategy(tickers),
+    'GPT':         ValueOpportunityStrategy(tickers, lookback_long=12, lookback_short=1, top_k=0.5),
 }
 
 # 5) Wire up and run the backtest

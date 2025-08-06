@@ -16,7 +16,7 @@ class ValueOpportunityStrategy(BaseStrategy):
     Score = -1-month return × 12-month return — so the higher the 12mo return and lower the 1mo return, the better.
     """
     
-    def __init__(self, tickers, name=None, lookback_long=12, lookback_short=2, top_k=0.5, **params):
+    def __init__(self, tickers, name=None, lookback_long=12, lookback_short=1, top_k=0.5, **params):
         super().__init__(tickers, name)
         self.lookback_long = lookback_long
         self.lookback_short = lookback_short
