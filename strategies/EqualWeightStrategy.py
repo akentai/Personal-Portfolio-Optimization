@@ -10,7 +10,7 @@ class EqualWeightStrategy(BaseStrategy):
 
     def __init__(self, tickers, name=None):
         super().__init__(tickers, name)
-
+ 
     def optimize(
         self,
         current_portfolio: np.ndarray,

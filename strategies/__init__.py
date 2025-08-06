@@ -9,3 +9,5 @@ from .CvxPortfolioStrategy import CvxPortfolioStrategy
 from .BlackLittermanMVO import BlackLittermanMVO
 from .ValueAveragingStrategy import ValueAveragingStrategy
 from .MomentumStrategy import MomentumStrategy
+from .MinVarianceStrategy import MinVarianceStrategy
+from .CVaRStrategy import CVaRStrategy
