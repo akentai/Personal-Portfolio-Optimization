@@ -21,6 +21,17 @@ from strategies import (
     MinVarianceStrategy,
     CVaRStrategy
 )
+
+from evaluation import (
+    plot_all_strategies_cumulative,
+    plot_strategy,
+    plot_drawdowns,
+    plot_rolling_metrics,
+    plot_risk_return_scatter,
+    plot_time_weighted_returns,
+    compute_strategy_metrics
+)
+
 import numpy as np
 import pandas as pd
 
@@ -62,4 +73,4 @@ bt = Backtester(
     monthly_cash       = monthly_cash,
 )
 
-results = bt.run()
+#results = bt.run()
