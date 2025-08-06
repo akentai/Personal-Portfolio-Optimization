@@ -11,3 +11,4 @@ from .ValueAveragingStrategy import ValueAveragingStrategy
 from .MomentumStrategy import MomentumStrategy
 from .MinVarianceStrategy import MinVarianceStrategy
 from .CVaRStrategy import CVaRStrategy
+from .ValueOpportunityStrategy import ValueOpportunityStrategy

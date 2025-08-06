@@ -19,7 +19,8 @@ from strategies import (
     BlackLittermanMVO,
     ValueAveragingStrategy,
     MinVarianceStrategy,
-    CVaRStrategy
+    CVaRStrategy,
+    ValueOpportunityStrategy
 )
 
 from evaluation import (
