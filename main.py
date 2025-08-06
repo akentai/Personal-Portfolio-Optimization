@@ -6,3 +6,4 @@ from data import (
     build_etf_benchmark,
 )
 
+from backtesting import Backtester
