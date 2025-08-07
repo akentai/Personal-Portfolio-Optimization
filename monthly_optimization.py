@@ -24,6 +24,11 @@ from strategies import (
 
 from data import DataLoader
 
+
+#####################################################################################
+##### User Inputs ###################################################################
+
+
 # 1a) Define your universe and fetch prices (incl. SPY for benchmark)
 tickers = ['AAPL', 'MSFT', 'GOOGL', 'AMZN']
 
@@ -39,6 +44,7 @@ current_portfolio = [0] * n
 # 3) How much new cash to add each rebalance period?
 monthly_cash = 2_000
 
+######################################################################################
 
 momentum = MomentumStrategy(tickers)
 df = momentum.optimize(
