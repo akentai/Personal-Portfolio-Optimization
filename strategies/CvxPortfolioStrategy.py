@@ -1,8 +1,8 @@
-from .BaseStrategy import BaseStrategy
 import numpy as np
 import pandas as pd
 import cvxportfolio as cvx
 from cvxportfolio.data import UserProvidedMarketData
+from .BaseStrategy import BaseStrategy
 
 class CvxPortfolioStrategy(BaseStrategy):
     def __init__(
@@ -19,10 +19,10 @@ class CvxPortfolioStrategy(BaseStrategy):
 
     def optimize(
         self,
-        current_portfolio: np.ndarray,   # current $ exposures
+        current_portfolio: np.ndarray,  # current $ exposures
         new_capital: float,
         price_history: pd.DataFrame,     # indexed by timestamp
-        returns_history: pd.DataFrame    # indexed by timestamp
+        returns_history: pd.DataFrame   # indexed by timestamp
     ) -> pd.DataFrame:
         #
         V0 = current_portfolio.sum()
@@ -33,7 +33,7 @@ class CvxPortfolioStrategy(BaseStrategy):
 
         # 2) prepare holdings and market data
         tickers = list(returns.columns)
-        h0 = pd.Series([0]*len(tickers) + [2000],
+        h0 = pd.Series([0]*len(tickers) + [new_capital],
                       index=tickers + ['cash'])
         md = cvx.UserProvidedMarketData(returns=returns, cash_key='cash')
 

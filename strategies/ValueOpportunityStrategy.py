@@ -40,7 +40,7 @@ class ValueOpportunityStrategy(BaseStrategy):
         if combined_score.sum() == 0:
             weights = np.full(len(self.tickers), 1 / len(self.tickers))
         else:
-            weights = pd.Series(0, index=self.tickers)
+            weights = pd.Series(0.0, index=self.tickers)
             weights[top_quality] = combined_score / combined_score.sum()
             weights = weights.values
 
