@@ -103,7 +103,7 @@ Strategies
   - SPY (S&P 500)
   - 3-ETF Rule (e.g., SPY, QQQ, VYM)
 **See the example below**
-![Strategy Comparison](images/multiple.png)
+![Strategy Comparison](images/Multiple.png)
 ---
 
 ### B. 🔍 Analyze a Single Strategy — `run_single_strategy.py`
@@ -111,9 +111,9 @@ Strategies
 - Test a single strategy (e.g., Markowitz MVO)
 - Visualize how it allocates capital
 - Compare its performance to cash/SPY/ETF benchmarks
----
 **See the example below**
-![Strategy](images/single.png)
+![Strategy](images/Single.png)
+---
 
 ### C. 📅 Monthly Optimization Script — `monthly_optimization.py`
 
