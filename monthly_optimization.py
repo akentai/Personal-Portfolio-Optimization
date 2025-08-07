@@ -48,4 +48,6 @@ df = momentum.optimize(
     returns_history   = prices.pct_change().dropna()
 )
 
-print(df.round(2).to_string())
+print("")
+print(df.round(1).to_string())
+print("")
