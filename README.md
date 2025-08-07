@@ -16,7 +16,7 @@ We evaluate a range of **portfolio optimization strategies**, helping users:
   - Saving cash  
   - Keeping money in a bank (risk-free rate)  
   - Investing fully in the S&P 500  
-  - Applying the 3-ETF rule (e.g., SPY, QQQ, VYM)
+  - Applying the 3-ETF rule (e.g., S&P 50%, QQQ - Tech ETF 40%, VYM - Dividen ETF 10%)
 
 ### ​ Assumptions
 
@@ -33,20 +33,8 @@ We evaluate a range of **portfolio optimization strategies**, helping users:
 4. **Transaction Costs Ignored**  
    Transaction fees are excluded. Based on Interactive Brokers, costs are around **€1.75 per instrument**, which is negligible for larger monthly investments.
 
----
-
-## ​ Related Work
-
-| Strategy Type                 | Description                                  | Pros                                | Cons                                |
-|------------------------------|----------------------------------------------|-------------------------------------|-------------------------------------|
-| Mean-Variance Optimization   | Markowitz efficient frontier                 | Simple, well-studied                | Sensitive to input estimation       |
-| Risk Parity                  | Equalizes risk contributions                 | Robust to assumptions               | May underperform in bull markets    |
-| Max Sharpe / Sortino         | Risk-adjusted return maximization            | Captures return/risk balance        | Requires accurate input estimation  |
-| CVaR Optimization            | Focuses on downside risk                     | Tail-risk aware                     | Slower to compute                   |
-| Black-Litterman              | Combines priors and investor views           | Flexible, realistic                 | Requires good view specification    |
-| Equal Weight                 | Equal allocation across assets               | Simple and naive baseline           | Ignores return/risk differences     |
-| Momentum-based               | Allocates to recent winners                  | Captures trends                     | Can overfit or chase noise          |
-| Value Averaging              | Targets specific growth paths                | Disciplined contribution strategy   | Ignores recent market changes       |
+5. **Dollar Analysis**
+   Everything is in dollars since that is what 'yfinance' api provides.
 
 ---
 
@@ -57,38 +45,90 @@ Here are some noteworthy open-source projects with complementary features or ins
 - **[PyPortfolioOpt](https://github.com/robertmartin8/PyPortfolioOpt)**  
   Implements portfolio optimization techniques including mean-variance, Black-Litterman, Hierarchical Risk Parity, shrinkage, and efficient frontiers.  
   **Pros**: Rich, well-documented. **Cons**: Focuses on static optimizations, fewer buy-only flow scenarios.  
-  :contentReference[oaicite:1]{index=1}
 
 - **[Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib)**  
   Built atop CVXPY and pandas, it offers strategic asset allocation, performance analysis, and risk decomposition.  
   **Pros**: Advanced analytics. **Cons**: More academic focus, less tailored to monthly incremental investing.  
-  :contentReference[oaicite:2]{index=2}
 
 - **[skfolio](https://github.com/skfolio/skfolio)**  
   Portfolio optimization and risk management framework compatible with scikit-learn.  
   **Pros**: Pipeline integration, cross-validation support. **Cons**: Less focus on buy-only or periodic injection logic.  
-  :contentReference[oaicite:3]{index=3}
 
 - **[PyroQuant/Portfolio‑Optimizer](https://github.com/PyroQuant/Portfolio-Optimizer)**  
   A simple script demonstrating Sharpe, CVaR, Sortino, and variance-based optimizations using Yahoo Finance data.  
   **Pros**: Lightweight and straightforward. **Cons**: Lacks modular strategy design and backtesting capabilities.  
-  :contentReference[oaicite:4]{index=4}
 
 Other useful resources for algorithms and tools include the **[awesome-quant](https://github.com/wilsonfreitas/awesome-quant)** list for many frameworks, and **FinRL** for reinforcement learning (though overkill for low-frequency investing).  
-:contentReference[oaicite:5]{index=5}
 
 ---
 
 ## ​​ Repository Structure
 
-```text
+```
 .
-├── main.py                        # Entry scripts
-├── benchmarks/                   # Cash, SPY, Risk-Free, ETFs
+├── monthly_optimization.py       # To be used every month
 ├── strategies/                   # Individual strategy classes
 ├── backtesting/                  # Backtester class
-├── data/                         # DataLoader (uses Yahoo Finance)
+├── data/                         # DataLoader (uses Yahoo Finance) and benchmarks
 ├── evaluation/                   # Visualization and performance (TBD)
-├── monthly_optimization.py       # One-step allocation
 ├── requirements.txt
 └── README.md
+```
+
+Strategies
+
+| Strategy Type                 | Description                                 |
+|------------------------------|----------------------------------------------|
+| Mean-Variance Optimization   | Markowitz efficient frontier                 | 
+| Risk Parity                  | Equalizes risk contributions                 | 
+| Max Sharpe / Sortino         | Risk-adjusted return maximization            |
+| CVaR Optimization            | Focuses on downside risk                     | 
+| Black-Litterman              | Combines priors and investor views           | 
+| Equal Weight                 | Equal allocation across assets               |
+| Momentum-based               | Allocates to recent winners                  | 
+| Value Averaging              | Targets specific growth paths                | 
+
+---
+
+## 4. 🚀 How to Use This Project
+
+### A. 🧪 Compare Strategies — `run_multiple_strategies.py`
+
+- Choose your tickers
+- Backtest a list of strategies
+- Compare results with benchmarks like:
+  - Cash
+  - Risk-free (bank interest)
+  - SPY (S&P 500)
+  - 3-ETF Rule (e.g., SPY, QQQ, VYM)
+
+---
+
+### B. 🔍 Analyze a Single Strategy — `run_single_strategy.py`
+
+- Test a single strategy (e.g., Markowitz MVO)
+- Visualize how it allocates capital
+- Compare its performance to cash/SPY/ETF benchmarks
+
+---
+
+### C. 📅 Monthly Optimization Script — `monthly_optimization.py`
+
+Use this lightweight script to **get your monthly allocation** using updated prices and your chosen strategy.
+
+```python
+from data import DataLoader
+from strategies import MomentumStrategy
+
+tickers = ['AAPL', 'MSFT', 'GOOGL', 'AMZN']
+loader = DataLoader(tickers, start='2010-01-01', interval='1mo')
+prices = loader.fetch_prices()
+
+strategy = MomentumStrategy(tickers)
+df = strategy.optimize(
+    current_portfolio=[0]*len(tickers),
+    new_capital=2000,
+    price_history=prices,
+    returns_history=prices.pct_change().dropna()
+)
+print(df.round(1))
