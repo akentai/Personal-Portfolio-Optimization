@@ -1,6 +1,6 @@
 # ​ Personal Portfolio Optimization
 
-A modular Python framework to test and apply portfolio optimization strategies for **monthly investments** using **historical data**, **mathematical optimization**, and **backtesting**. Built for **individual investors** and **aspiring quants**.
+Built for **beginner individual investors**. A modular Python framework to test and apply portfolio optimization strategies for **monthly investments** using **historical data**, **mathematical optimization**, and **backtesting**. 
 
 ---
 
