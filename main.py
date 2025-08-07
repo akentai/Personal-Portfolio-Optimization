@@ -1,12 +1,11 @@
-from data import (
-    DataLoader,
-    build_cash_benchmark,
-    build_rf_benchmark,
-    build_spy_benchmark,
-    build_etf_benchmark,
-)
+# Import necessary libraries and modules
+import sys
+import os
+import numpy as np
+import pandas as pd
 
-from backtesting import Backtester
+# Add parent directory to sys.path so you can import from data, strategies, evaluation, and backtesting modules
+sys.path.append(os.path.abspath(".."))
 
 from strategies import (
     MaxSharpeStrategy,
@@ -15,7 +14,7 @@ from strategies import (
     RiskParityStrategy,
     EqualWeightStrategy,
     MeanVarianceOptimizationStrategy,
-    CvxPortfolioStrategy,
+    #CvxPortfolioStrategy,
     BlackLittermanMVO,
     ValueAveragingStrategy,
     MinVarianceStrategy,
@@ -23,56 +22,30 @@ from strategies import (
     ValueOpportunityStrategy
 )
 
-from evaluation import (
-    plot_all_strategies_cumulative,
-    plot_strategy,
-    plot_drawdowns,
-    plot_rolling_metrics,
-    plot_risk_return_scatter,
-    plot_time_weighted_returns,
-    compute_strategy_metrics
-)
+from data import DataLoader
 
-import numpy as np
-import pandas as pd
-
-# 1) Define your universe and fetch prices (incl. SPY for benchmark)
+# 1a) Define your universe and fetch prices (incl. SPY for benchmark)
 tickers = ['AAPL', 'MSFT', 'GOOGL', 'AMZN']
-#tickers = ['SPY', 'QQQ', 'VYM']
+
+# 1b) Load historical prices for the tickers
+# You can adjust the start date and interval as needed
 loader  = DataLoader(tickers, start='2010-01-01', interval='1mo')
 prices = loader.fetch_prices()
 
-# 2) Set up initial allocation: e.g. $100k equally split across the 4 stocks
+# 2) Set up current portfolio and new capital
 n = len(tickers)
-initial_capital    = 0
-initial_allocation = np.array([initial_capital / n] * n)
+current_portfolio = [0] * n
 
 # 3) How much new cash to add each rebalance period?
 monthly_cash = 2_000
 
-# 4) Instantiate your strategies
-strategies = {
-    'EqualWeight': EqualWeightStrategy(tickers),
-    'MVO':         MeanVarianceOptimizationStrategy(tickers),
-    'RiskParity':  RiskParityStrategy(tickers),
-    'MaxSharpe':   MaxSharpeStrategy(tickers),
-    'MaxSortino':  MaxSortinoStrategy(tickers),
-    'Momentum':    MomentumStrategy(tickers, lookback=6),
-    'MomentumDiv': MomentumStrategy(tickers, lookback=6, diversification=True),
-    'MinVol':      MinVarianceStrategy(tickers),
-    'BL':          BlackLittermanMVO(tickers, implied_weights=[0.25, 0.25, 0.25, 0.25]),
-    'CVaR':        CVaRStrategy(tickers),
-    'cvx':         CvxPortfolioStrategy(tickers),
-    'ValueAvg':    ValueAveragingStrategy(tickers),
-    'GPT':         ValueOpportunityStrategy(tickers, lookback_long=12, lookback_short=1, top_k=0.5),
-}
 
-# 5) Wire up and run the backtest
-bt = Backtester(
-    strategies         = strategies,
-    prices             = prices,
-    initial_allocation = initial_allocation,
-    monthly_cash       = monthly_cash,
+momentum = MomentumStrategy(tickers)
+df = momentum.optimize(
+    current_portfolio = current_portfolio, 
+    new_capital       = monthly_cash, 
+    price_history     = prices, 
+    returns_history   = prices.pct_change().dropna()
 )
 
-#results = bt.run()
+print(df.round(2).to_string())
