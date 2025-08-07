@@ -34,7 +34,7 @@ We evaluate a range of **portfolio optimization strategies**, helping users:
    Transaction fees are excluded. Based on Interactive Brokers, costs are around **€1.75 per instrument**, which is negligible for larger monthly investments.
 
 5. **Dollar Analysis**
-   Everything is in dollars since that is what 'yfinance' api provides.
+   Everything is in dollars since that is what 'yfinance' API provides.
 
 ---
 
@@ -70,7 +70,8 @@ Other useful resources for algorithms and tools include the **[awesome-quant](ht
 ├── strategies/                   # Individual strategy classes
 ├── backtesting/                  # Backtester class
 ├── data/                         # DataLoader (uses Yahoo Finance) and benchmarks
-├── evaluation/                   # Visualization and performance (TBD)
+├── evaluation/                   # Visualization and performance
+├── images/  
 ├── requirements.txt
 └── README.md
 ```
@@ -101,7 +102,8 @@ Strategies
   - Risk-free (bank interest)
   - SPY (S&P 500)
   - 3-ETF Rule (e.g., SPY, QQQ, VYM)
-
+**See the example below**
+![Strategy Comparison](images/multiple.png)
 ---
 
 ### B. 🔍 Analyze a Single Strategy — `run_single_strategy.py`
@@ -109,8 +111,9 @@ Strategies
 - Test a single strategy (e.g., Markowitz MVO)
 - Visualize how it allocates capital
 - Compare its performance to cash/SPY/ETF benchmarks
-
 ---
+**See the example below**
+![Strategy](images/single.png)
 
 ### C. 📅 Monthly Optimization Script — `monthly_optimization.py`
 
@@ -142,7 +145,7 @@ print(df.round(1))
 | AMZN   | 0                 | 1160.5         | 1160.5         | 0.6          | 0.0    |
 
 
-## 5. TODO
+## 5. Future Work
 - Fix CVXPortfolio strategy integration
 - Add annual full rebalancing
 - Implement Model Predictive Control (MPC) strategy
