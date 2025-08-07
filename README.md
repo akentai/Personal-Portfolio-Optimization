@@ -6,7 +6,7 @@ A modular Python framework to test and apply portfolio optimization strategies f
 
 ## ​ Motivation
 
-Many of us set aside money each month — often letting it sit idle in a bank account, slowly eroded by inflation. This project proposes a more conscious alternative: **systematic, low-effort monthly investing** based on **optimization techniques** used in quantitative finance.
+Many of us set aside money each month often letting it sit idle in a bank account, slowly eroded by inflation. This project proposes a more conscious alternative: **systematic, low-effort monthly investing** based on **optimization techniques** used in quantitative finance.
 
 We evaluate a range of **portfolio optimization strategies**, helping users:
 
@@ -27,7 +27,7 @@ We evaluate a range of **portfolio optimization strategies**, helping users:
    You invest a fixed amount every month (default: \$1,000–\$10,000). The simulator handles the compounding and injection of capital.
 
 3. **Buy-Only Rebalancing**  
-   We do **not re-allocate the full portfolio each month**. Instead, we **buy additional shares** of selected instruments — minimizing effort and transaction costs.  
+   We do **not re-allocate the full portfolio each month**. Instead, we **buy additional shares** of selected instruments to minimize effort and transaction costs.  
    > Yearly full reallocation is a planned feature.
 
 4. **Transaction Costs Ignored**  
@@ -132,3 +132,21 @@ df = strategy.optimize(
     returns_history=prices.pct_change().dropna()
 )
 print(df.round(1))
+```
+**Example Output**
+       Current Portfolio  New Allocation  New Portfolio  New Weights  Unused
+AAPL                   0             0.0            0.0          0.0     0.0
+MSFT                   0           244.4          244.4          0.1     0.0
+GOOGL                  0           595.1          595.1          0.3     0.0
+AMZN                   0          1160.5         1160.5          0.6     0.0
+
+## 5. TODO
+- Fix CVXPortfolio strategy integration
+- Add annual full rebalancing
+- Implement Model Predictive Control (MPC) strategy
+
+## Setup Instructions
+```
+pip install -r requirements.txt
+```
+
