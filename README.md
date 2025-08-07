@@ -134,11 +134,13 @@ df = strategy.optimize(
 print(df.round(1))
 ```
 **Example Output**
-       Current Portfolio  New Allocation  New Portfolio  New Weights  Unused
-AAPL                   0             0.0            0.0          0.0     0.0
-MSFT                   0           244.4          244.4          0.1     0.0
-GOOGL                  0           595.1          595.1          0.3     0.0
-AMZN                   0          1160.5         1160.5          0.6     0.0
+| Ticker | Current Portfolio | New Allocation | New Portfolio | New Weights | Unused |
+|--------|-------------------|----------------|----------------|--------------|--------|
+| AAPL   | 0                 | 0.0            | 0.0            | 0.0          | 0.0    |
+| MSFT   | 0                 | 244.4          | 244.4          | 0.1          | 0.0    |
+| GOOGL  | 0                 | 595.1          | 595.1          | 0.3          | 0.0    |
+| AMZN   | 0                 | 1160.5         | 1160.5         | 0.6          | 0.0    |
+
 
 ## 5. TODO
 - Fix CVXPortfolio strategy integration
