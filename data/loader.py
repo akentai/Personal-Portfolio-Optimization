@@ -10,13 +10,13 @@ class DataLoader:
         self, 
         tickers: list, 
         start: str = '2010-01-01', 
-        end: str = None, 
+        end: str = datetime.today().strftime('%Y-%m-%d'), 
         interval: str = '1mo',
         currency: str = 'EUR'
     ):
         self.tickers    = tickers
         self.start      = start
-        self.end        = end or datetime.today().strftime('%Y-%m-%d')
+        self.end        = end 
         self.interval   = interval
         self.currency   = currency
 
@@ -57,9 +57,7 @@ class DataLoader:
         )['Close']
 
         # Resample/Align FX data to match asset prices dates
-        fx_data = fx_data.reindex(data.index).ffill()
-
-        #Price in Target Currency = Price in USD / (USD per Target)
-        # axis=0 aligns the division by the index (dates)
-        return data.div(fx_data, axis=0)
+        fx_data.reindex(data.index).ffill()
         
+        data.div(fx_data, axis=0)
+        return data
