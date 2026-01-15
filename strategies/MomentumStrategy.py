@@ -11,10 +11,11 @@ class MomentumStrategy(BaseStrategy):
     - lookback: number of months to compute momentum over (default: 6)
     - diversification: blend signal with equal weight to avoid concentration
     """
-    def __init__(self, tickers, name="Momentum", lookback=6, diversification=False, **params):
+    def __init__(self, tickers, name="Momentum", lookback=6, diversification=False, vol_threshold=0.1, **params):
         super().__init__(tickers, name)
         self.lookback = lookback
         self.diversification = diversification
+        self.vol_threshold = vol_threshold
         self.fractional_shares = True  # assumed to be True for this strategy
 
     def optimize(self, current_portfolio, new_capital, price_history, returns_history, **kwargs):
@@ -27,9 +28,9 @@ class MomentumStrategy(BaseStrategy):
         # 2. Ignore assets with negative momentum
         momentum_returns[momentum_returns < 0] = 0
 
-        # 3. Remove high volatility assets (>10% monthly std)
+        # 3. Remove high volatility assets
         vol = returns_history[-self.lookback:].std()
-        momentum_returns[vol > 0.1] = 0
+        momentum_returns[vol > self.vol_threshold] = 0
 
         # 4. Normalize or fallback to equal weights
         equal_weights = np.full(len(self.tickers), 1 / len(self.tickers))

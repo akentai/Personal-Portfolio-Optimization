@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 class CVaRStrategy(BaseStrategy):
-    def __init__(self, tickers, name=None, alpha=0.95):
+    def __init__(self, tickers, name="CVaR", alpha=0.95):
         super().__init__(tickers, name)
         self.alpha = alpha
 

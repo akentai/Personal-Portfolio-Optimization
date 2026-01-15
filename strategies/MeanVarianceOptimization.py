@@ -9,9 +9,8 @@ class MeanVarianceOptimizationStrategy(BaseStrategy):
     Maximizes expected return minus a penalty for risk, scaled by a risk aversion parameter.
     """
 
-    def __init__(self, tickers, risk_aversion=1.0, fractional_shares=True, backtest=False):
-        self.tickers = tickers
-        # MVO constants
+    def __init__(self, tickers, name="MVO", risk_aversion=1.0, fractional_shares=True, backtest=False):
+        super().__init__(tickers, name)
         self.risk_aversion = risk_aversion
         # CP vs MILP
         # For now only CP is supported
@@ -56,14 +55,14 @@ class MeanVarianceOptimizationStrategy(BaseStrategy):
 
         weights = w.value.round(3)
         allocation = (w.value * Vt - A).round(0).astype(int)
-        new_portoflio = (current_portfolio + allocation).round(0).astype(int)
+        new_portfolio = (current_portfolio + allocation).round(0).astype(int)
 
         if self.backtest:
-            return current_portfolio, allocation, new_portoflio, w.value
+            return current_portfolio, allocation, new_portfolio, w.value
 
         return pd.DataFrame({
             'Current Portfolio': current_portfolio,
             'New Allocation': allocation,
-            'New Portfolio': new_portoflio,
+            'New Portfolio': new_portfolio,
             'New Weights': weights
         }, index=self.tickers)

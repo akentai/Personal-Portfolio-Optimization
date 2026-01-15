@@ -10,19 +10,6 @@ class BaseStrategy(ABC):
         """Store any strategy-specific parameters."""
         self.tickers = tickers
         self.name = name
-        
-    # @abstractmethod
-    # def train(
-    #     self,
-    #     price_history: pd.DataFrame,
-    #     returns_history: pd.DataFrame,
-    #     **kwargs
-    # ):
-    #     """
-    #     Train the strategy on historical data.
-    #     This method can be used to compute any necessary parameters or models.
-    #     """
-    #     pass
 
     @abstractmethod
     def optimize(
@@ -37,4 +24,4 @@ class BaseStrategy(ABC):
         Given current_weights, cash, and history, compute new allocations.
         Strategies can decide to use prices, returns, covariances, macro series, etc.
         """
-        pass
+        raise NotImplementedError
