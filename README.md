@@ -1,6 +1,6 @@
 # ​ Personal Portfolio Optimization
 
-A modular Python framework to test and apply portfolio optimization strategies for **monthly investments** using **historical data**, **mathematical optimization**, and **backtesting**. Built for **individual investors** and **aspiring quants**.
+Built for **beginner individual investors**. A modular Python framework to test and apply portfolio optimization strategies for **monthly investments** using **historical data**, **mathematical optimization**, and **backtesting**. 
 
 ---
 
@@ -103,7 +103,7 @@ Strategies
   - SPY (S&P 500)
   - 3-ETF Rule (e.g., SPY, QQQ, VYM)
 **See the example below**
-![Strategy Comparison](images/multiple.png)
+![Strategy Comparison](images/Multiple.png)
 ---
 
 ### B. 🔍 Analyze a Single Strategy — `run_single_strategy.py`
@@ -111,9 +111,9 @@ Strategies
 - Test a single strategy (e.g., Markowitz MVO)
 - Visualize how it allocates capital
 - Compare its performance to cash/SPY/ETF benchmarks
----
 **See the example below**
-![Strategy](images/single.png)
+![Strategy](images/Single.png)
+---
 
 ### C. 📅 Monthly Optimization Script — `monthly_optimization.py`
 
