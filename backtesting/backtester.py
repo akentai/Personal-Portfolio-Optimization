@@ -24,7 +24,7 @@ class Backtester:
         self.strategies = strategies
         self.prices = prices
         self.tickers = prices.columns.tolist()
-        self.returns = prices.pct_change().dropna()
+        self.returns = prices.ffill().pct_change(fill_method=None).dropna()
         self.dates = self.returns.index
         self.initial_allocation = initial_allocation
         self.monthly_cash = monthly_cash

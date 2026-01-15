@@ -14,7 +14,6 @@ class MeanVarianceOptimizationStrategy(BaseStrategy):
         self.risk_aversion = risk_aversion
         # CP vs MILP
         # For now only CP is supported
-        self.fractional_shares = fractional_shares # assumed to be True for this strategy
         self.backtest = backtest
 
     def optimize(self, current_portfolio: np.ndarray, new_capital: float, price_history: pd.DataFrame, returns_history: pd.DataFrame):

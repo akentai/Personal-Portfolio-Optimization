@@ -16,7 +16,6 @@ class MomentumStrategy(BaseStrategy):
         self.lookback = lookback
         self.diversification = diversification
         self.vol_threshold = vol_threshold
-        self.fractional_shares = True  # assumed to be True for this strategy
 
     def optimize(self, current_portfolio, new_capital, price_history, returns_history, **kwargs):
         V0 = np.sum(current_portfolio)
