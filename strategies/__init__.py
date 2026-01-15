@@ -12,3 +12,6 @@ from .MomentumStrategy import MomentumStrategy
 from .MinVarianceStrategy import MinVarianceStrategy
 from .CVaRStrategy import CVaRStrategy
 from .ValueOpportunityStrategy import ValueOpportunityStrategy
+from .DualMomentumStrategy import DualMomentumStrategy
+from .TrendFollowingStrategy import TrendFollowingStrategy
+from .VolatilityTargetingStrategy import VolatilityTargetingStrategy
