@@ -3,9 +3,9 @@ import numpy as np
 import pandas as pd
 
 class RiskParityStrategy(BaseStrategy):
-    def __init__(self, tickers, name=None, fractional_shares=True):
+    def __init__(self, tickers, name=None, lookback=-1):
         super().__init__(tickers, name)
-        self.fractional_shares = fractional_shares # assumed to be True for this strategy
+        self.lookback = lookback
 
     def optimize(self, current_portfolio, new_capital, price_history, returns_history, **kwargs):
 
@@ -16,7 +16,8 @@ class RiskParityStrategy(BaseStrategy):
         Vt = V0 + B
 
         # 1. Compute inverse volatility weights
-        vol = returns_history.std()
+        vol = returns_history.std() if self.lookback == -1 else returns_history.tail(self.lookback).std()
+    
         inv_vol = 1 / vol.replace(0, np.nan)  # Avoid division by zero
         w = inv_vol / inv_vol.sum()
 

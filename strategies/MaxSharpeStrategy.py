@@ -9,14 +9,15 @@ class MaxSharpeStrategy(BaseStrategy):
     - Uses expected returns and covariance matrix from historical data.
     - Applies long-only constraint and enforces minimum weights to prevent selling.
     """
-    def __init__(self, tickers, name="MaxSharpe", fractional_shares=True, **params):
+    def __init__(self, tickers, name="MaxSharpe", lookback=-1, **params):
         super().__init__(tickers, name)
-        self.fractional_shares = fractional_shares # assumed to be True for this strategy
+        self.lookback = lookback
 
     def optimize(self, current_portfolio, new_capital, price_history, returns_history, **kwargs):
         V0 = current_portfolio.sum()
         Vt = V0 + new_capital
 
+        returns_history = returns_history if self.lookback == -1 else returns_history.tail(self.lookback)
         mu = returns_history.mean().values              # Expected returns
         cov = returns_history.cov().values              # Covariance matrix
         n = len(mu)

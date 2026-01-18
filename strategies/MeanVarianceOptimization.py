@@ -9,12 +9,13 @@ class MeanVarianceOptimizationStrategy(BaseStrategy):
     Maximizes expected return minus a penalty for risk, scaled by a risk aversion parameter.
     """
 
-    def __init__(self, tickers, name="MVO", risk_aversion=1.0, fractional_shares=True, backtest=False):
+    def __init__(self, tickers, name="MVO", risk_aversion=1.0, backtest=False, lookback=-1):
         super().__init__(tickers, name)
         self.risk_aversion = risk_aversion
         # CP vs MILP
         # For now only CP is supported
         self.backtest = backtest
+        self.lookback = lookback
 
     def optimize(self, current_portfolio: np.ndarray, new_capital: float, price_history: pd.DataFrame, returns_history: pd.DataFrame):
         """
@@ -23,6 +24,7 @@ class MeanVarianceOptimizationStrategy(BaseStrategy):
         Returns:
         - Asset quantity to buy after optimal buy-only rebalancing
         """
+        returns_history = returns_history if self.lookback == -1 else returns_history.tail(self.lookback)
         mu = returns_history.mean().values
         cov = returns_history.cov().values
         cov = 0.5 * (cov + cov.T)

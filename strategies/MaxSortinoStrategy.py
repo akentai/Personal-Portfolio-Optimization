@@ -9,14 +9,15 @@ class MaxSortinoStrategy(BaseStrategy):
     - Penalizes only negative volatility (downside deviation).
     - Enforces no selling and full investment.
     """
-    def __init__(self, tickers, name="MaxSortino", fractional_shares=True, **params):
+    def __init__(self, tickers, name="MaxSortino", lookback=-1, **params):
         super().__init__(tickers, name)
-        self.fractional_shares = fractional_shares # assumed to be True for this strategy
+        self.lookback = lookback
 
     def optimize(self, current_portfolio, new_capital, price_history, returns_history, **kwargs):
         V0 = current_portfolio.sum()
         Vt = V0 + new_capital
 
+        reutnrs_history = returns_history if self.lookback == -1 else returns_history.tail(self.lookback)
         mu = returns_history.mean().values
         downside = returns_history.copy()
         downside[downside > 0] = 0

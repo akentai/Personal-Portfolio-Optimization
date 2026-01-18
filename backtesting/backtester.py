@@ -19,7 +19,7 @@ class Backtester:
         prices: pd.DataFrame,
         initial_allocation: np.ndarray,
         monthly_cash: float,
-        rolling_window: int = 60  # Default: 60 months (5 years)
+        rolling_window: int = 12  
     ):
         self.strategies = strategies
         self.prices = prices
@@ -93,10 +93,12 @@ class Backtester:
                 new_allocs = np.asarray(df['New Allocation'].values, dtype=int)  # how new cash is allocated
                 new_vals   = np.asarray(df['New Portfolio'].values, dtype=int)   # total new value of portfolio
                 new_wts    = np.asarray(df['New Weights'].values, dtype=float)   # new portfolio weights
+                # Subtract transaction fees (1.75EUR per trade)
+                new_vals   = new_vals - (1.75 * (new_allocs > 0).astype(int))
                 total_val  = new_vals.sum()  # total portfolio value
 
                 # 6) Store current step values
-                buf['allocs'].append(new_allocs)
+                buf['allocs'].append(new_allocs)  
                 buf['vals'].append(new_vals)
                 buf['weights'].append(new_wts)
                 buf['total'].append(total_val)

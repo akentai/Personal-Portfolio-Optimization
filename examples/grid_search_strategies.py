@@ -18,7 +18,10 @@ from evaluation import compute_strategy_metrics
 from strategies import (
     MeanVarianceOptimizationStrategy,
     MomentumStrategy,
+    RiskParityStrategy,
     CVaRStrategy,
+    MaxSharpeStrategy,
+    MaxSortinoStrategy,
     BlackLittermanMVO,
     ValueAveragingStrategy,
     ValueOpportunityStrategy,
@@ -51,9 +54,31 @@ def is_better(score, best_score, higher_is_better=True):
 ##### User Inputs ###################################################################
 
 # Universe and data
-tickers = ["AAPL", "MSFT", "GOOGL", "AMZN"]
+tickers = [
+    # Standard
+    "AMZN",     # Amazon
+    "META",     # Meta
+    "GOOG",     # Alphabet 
+    "MSFT",     # Microsoft
+    
+    # Good performers
+    #"NVDA",     # Nvidia
+    "AAPL",     # Apple
+    "AMD",      # AMD
+    "MU",       # Micron
+    "TSM",      # TSMC ADR
+    "JPM",      # JPMorgan
+    
+    # Underperforming 
+    "INTC",       # Intel (no major EUR cross listing widely available)
+    "BA",         # Boeing
+    "IBM",        # IBM
+    "MA",         # Mastercard
+    "ADBE",       # Adobe
+    "VZ"          # Verizon
+]
 start_date = (datetime.date.today() - datetime.timedelta(days=365 * 10)).strftime("%Y-%m-%d")
-end_date = (datetime.date.today() - datetime.timedelta(days=365 * 5)).strftime("%Y-%m-%d")
+end_date = (datetime.date.today() - datetime.timedelta(days=365 * 3)).strftime("%Y-%m-%d")
 interval = "1mo"
 
 # Portfolio settings
@@ -71,14 +96,33 @@ strategy_configs = {
     "MVO": {
         "class": MeanVarianceOptimizationStrategy,
         "param_grid": {
-            "risk_aversion": [0.5, 1.0, 2.0, 5.0],
+            "risk_aversion": [0.1, 0.2, 0.5, 1.0],
+            "lookback": [3, 6, 9, 12, -1],
         },
     },
     "Momentum": {
         "class": MomentumStrategy,
         "param_grid": {
             "lookback": [3, 6, 9, 12],
-            "vol_threshold": [0.05, 0.1, 0.2],
+            "vol_threshold": [0.1, 0.2, 0.3],
+        },
+    },
+    "RiskParity": {
+        "class": RiskParityStrategy,
+        "param_grid": {
+            "lookback": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -1],
+        },
+    },
+    "MaxSharpe": {
+        "class": MaxSharpeStrategy,
+        "param_grid": {
+            "lookback": [3, 4, 5, 6, 7, 8, 9, 12, -1],
+        },
+    },
+    "MaxSortino": {
+        "class": MaxSortinoStrategy,
+        "param_grid": {
+            "lookback": [3, 4, 5, 6, 7, 8, 9, 12, -1],
         },
     },
     "CVaR": {
@@ -186,6 +230,9 @@ def run_grid_search(strategy_name):
 strategies_to_run = [
     "Momentum",
     "MVO",
+    "RiskParity",
+    "MaxSharpe",
+    "MaxSortino",
     "CVaR",
     "Dual",
     "Trend",
