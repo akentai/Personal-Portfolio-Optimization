@@ -40,7 +40,7 @@ tickers = [
     "META",     # Meta
     "GOOG",     # Alphabet 
 
-    #"NVDA",     # Nvidia
+    "NVDA",     # Nvidia
     #"AAPL",     # Apple
     "AMD",      # AMD
     "MU",       # Micron
@@ -79,12 +79,12 @@ monthly_cash = 1_000
 strategies = [
     #('RiskParity', RiskParityStrategy(tickers, lookback=2)),
     ('Momentum', MomentumStrategy(tickers, lookback=9, vol_threshold=0.3)),
-    ('MVO', MeanVarianceOptimizationStrategy(tickers, risk_aversion=0.2, lookback=9)),
+    #('MVO', MeanVarianceOptimizationStrategy(tickers, risk_aversion=0.2, lookback=9)),
     ('MaxSharpe', MaxSharpeStrategy(tickers, lookback=3)),
     #('MaxSortino', MaxSortinoStrategy(tickers, lookback=3)),
     ('ValueOpp', ValueOpportunityStrategy(tickers, lookback_long=9, lookback_short=3, top_k=0.3)),
-    ('Trend', TrendFollowingStrategy(tickers, short_window=3, long_window=12)),
-    ('MPC', MPCStrategy(tickers, risk_aversion=0.2, horizon=12)),
+    #('Trend', TrendFollowingStrategy(tickers, short_window=3, long_window=12)),
+    ('Dual', DualMomentumStrategy(tickers, lookback=3, top_fraction=0.6, weighting='equal')),
 ]
 
 results = {}

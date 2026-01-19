@@ -15,3 +15,4 @@ from .ValueOpportunityStrategy import ValueOpportunityStrategy
 from .DualMomentumStrategy import DualMomentumStrategy
 from .TrendFollowingStrategy import TrendFollowingStrategy
 from .VolatilityTargetingStrategy import VolatilityTargetingStrategy
+from .MPCStrategy import MPCStrategy

@@ -27,7 +27,7 @@ from strategies import (
     ValueOpportunityStrategy,
     DualMomentumStrategy,
     TrendFollowingStrategy,
-    VolatilityTargetingStrategy,
+    VolatilityTargetingStrategy
 )
 
 
@@ -95,7 +95,7 @@ risk_free_rate = 0.0125
 strategy_configs = {
     "MVO": {
         "class": MeanVarianceOptimizationStrategy,
-        "param_grid": {
+         "param_grid": {
             "risk_aversion": [0.1, 0.2, 0.5, 1.0],
             "lookback": [3, 6, 9, 12, -1],
         },
@@ -148,8 +148,8 @@ strategy_configs = {
     "Dual": {
         "class": DualMomentumStrategy,
         "param_grid": {
-            "lookback": [3, 6, 9, 12],
-            "top_fraction": [0.2, 0.5],
+            "lookback": [1, 2, 3, 4, 5, 6, 9, 12],
+            "top_fraction": [0.2, 0.3, 0.4, 0.5, 0.6],
             "absolute_threshold": [0.0],
             "weighting": ["equal", "momentum"],
         },
