@@ -22,8 +22,7 @@ from strategies import (
     CVaRStrategy,
     ValueOpportunityStrategy,
     DualMomentumStrategy, 
-    TrendFollowingStrategy,
-    MPCStrategy
+    TrendFollowingStrategy
 )
 
 from data import DataLoader
@@ -35,29 +34,26 @@ from data import DataLoader
 # 1a) Define your universe and fetch prices 
 # Stocks
 tickers = [
-    "MSFT",     # Microsoft
+    # Standard
     "AMZN",     # Amazon
-    "META",     # Meta
-    "GOOG",     # Alphabet 
-
+    "GOOGL",    # Alphabet 
+    "MSFT",     # Microsoft
+    "TSM",      # TSM
     "NVDA",     # Nvidia
-    #"AAPL",     # Apple
     "AMD",      # AMD
-    "MU",       # Micron
-    #"SNDK",     # Sandisk
-    "TSM",      # TSMC ADR
-    "NBIS",
-
-    "GEV",      # GE Vernova
-    "JPM",      # JPMorgan
 ]
 
-# ETFs
+# De-duplicate tickers while preserving order (duplicate symbols can break alignment)
+tickers = list(dict.fromkeys(tickers))
+
+#ETFs
 # tickers = [
 #     "SPY", 
 #     "QQQ",
 #     "SMH"
 # ]
+
+# tickers = ['META', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'TSM']
 
 # 1b) Load historical prices for the tickers
 # You can adjust the start date and interval as needed
@@ -65,6 +61,9 @@ tickers = [
 start_date = (datetime.date.today() - datetime.timedelta(days=365 * 3)).strftime("%Y-%m-%d")
 loader  = DataLoader(tickers, start=start_date, interval='1mo')
 prices = loader.fetch_prices()
+prices = prices.apply(pd.to_numeric, errors="coerce")
+prices = prices.loc[:, ~prices.columns.duplicated()]
+prices = prices.reindex(columns=tickers)
 
 # 2) Set up current portfolio and new capital
 n = len(tickers)
@@ -77,14 +76,9 @@ monthly_cash = 1_000
 ######################################################################################
 
 strategies = [
-    #('RiskParity', RiskParityStrategy(tickers, lookback=2)),
-    ('Momentum', MomentumStrategy(tickers, lookback=9, vol_threshold=0.3)),
-    #('MVO', MeanVarianceOptimizationStrategy(tickers, risk_aversion=0.2, lookback=9)),
-    ('MaxSharpe', MaxSharpeStrategy(tickers, lookback=3)),
-    #('MaxSortino', MaxSortinoStrategy(tickers, lookback=3)),
-    ('ValueOpp', ValueOpportunityStrategy(tickers, lookback_long=9, lookback_short=3, top_k=0.3)),
-    #('Trend', TrendFollowingStrategy(tickers, short_window=3, long_window=12)),
-    ('Dual', DualMomentumStrategy(tickers, lookback=3, top_fraction=0.6, weighting='equal')),
+    ('MVO', MeanVarianceOptimizationStrategy(tickers, lookback=3, risk_aversion=1.0)),
+    ('Momentum', MomentumStrategy(tickers, lookback=4, vol_threshold=0.4, diversification=False)),
+    ('DualMomentum', DualMomentumStrategy(tickers, lookback=12, top_fraction=0.5, weighting="momentum")),
 ]
 
 results = {}
@@ -102,13 +96,18 @@ for name, strat in strategies:
 
 # Aggregate: average the New Allocation across strategies
 allocations = [results[name]['New Allocation'] for name in results]
-avg_allocation = sum(allocations) / len(allocations)
+allocations_df = pd.concat(allocations, axis=1)
+allocations_df = allocations_df.apply(pd.to_numeric, errors="coerce")
+avg_allocation = allocations_df.mean(axis=1)
 
 # Impose minimum investment of 100
 min_invest = 100
 
 # Create a summary DataFrame
-total_value = sum(results[list(results.keys())[0]]['Current Portfolio']) + sum(avg_allocation)
+total_value = (
+    results[list(results.keys())[0]]['Current Portfolio'].sum()
+    + avg_allocation.sum()
+)
 ensemble_df = pd.DataFrame({
     'Current Portfolio': results[list(results.keys())[0]]['Current Portfolio'],  # same for all
     'New Allocation': avg_allocation,

@@ -55,27 +55,29 @@ def is_better(score, best_score, higher_is_better=True):
 
 # Universe and data
 tickers = [
-    # Standard
     "AMZN",     # Amazon
-    "META",     # Meta
-    "GOOG",     # Alphabet 
+    "GOOGL",    # Alphabet 
     "MSFT",     # Microsoft
+    "TSM",      # TSMC
+    #"NVDA",     # Nvidia
+    "AMD",      # AMD
     
     # Good performers
-    #"NVDA",     # Nvidia
-    "AAPL",     # Apple
-    "AMD",      # AMD
-    "MU",       # Micron
-    "TSM",      # TSMC ADR
-    "JPM",      # JPMorgan
+    #"NVDA",    # Nvidia (Unique case, ignore for evaluation)
+    # "AAPL",     # Apple
+    # "AMD",      # AMD
+    # "MU",       # Micron
+    # "TSM",      # TSMC ADR
+    # "JPM",      # JPMorgan
+    #"NBIS",     # Nebius Group (no historical data, ignore for evaluation)
+    #"ANET",     # Arista Networks
     
     # Underperforming 
-    "INTC",       # Intel (no major EUR cross listing widely available)
-    "BA",         # Boeing
-    "IBM",        # IBM
-    "MA",         # Mastercard
-    "ADBE",       # Adobe
-    "VZ"          # Verizon
+    # "INTC",       # Intel 
+    # "BA",         # Boeing
+    # "MA",         # Mastercard
+    # "ADBE",       # Adobe
+    # "VZ",         # Verizon
 ]
 start_date = (datetime.date.today() - datetime.timedelta(days=365 * 10)).strftime("%Y-%m-%d")
 end_date = (datetime.date.today() - datetime.timedelta(days=365 * 3)).strftime("%Y-%m-%d")
@@ -103,8 +105,8 @@ strategy_configs = {
     "Momentum": {
         "class": MomentumStrategy,
         "param_grid": {
-            "lookback": [3, 6, 9, 12],
-            "vol_threshold": [0.1, 0.2, 0.3],
+            "lookback": [3, 4, 5, 6, 7, 8, 9, 12],
+            "vol_threshold": [0.05, 0.1, 0.2, 0.3, 0.4, 0.5],
         },
     },
     "RiskParity": {
@@ -148,7 +150,7 @@ strategy_configs = {
     "Dual": {
         "class": DualMomentumStrategy,
         "param_grid": {
-            "lookback": [1, 2, 3, 4, 5, 6, 9, 12],
+            "lookback": [1, 2, 3, 4, 5, 6, 7, 8, 9, 12],
             "top_fraction": [0.2, 0.3, 0.4, 0.5, 0.6],
             "absolute_threshold": [0.0],
             "weighting": ["equal", "momentum"],
@@ -236,7 +238,7 @@ strategies_to_run = [
     "CVaR",
     "Dual",
     "Trend",
-    "VolTarget",
+    #"VolTarget",
     "ValueOpp",
 ]
 
