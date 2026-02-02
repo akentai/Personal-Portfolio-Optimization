@@ -16,3 +16,4 @@ from .DualMomentumStrategy import DualMomentumStrategy
 from .TrendFollowingStrategy import TrendFollowingStrategy
 from .VolatilityTargetingStrategy import VolatilityTargetingStrategy
 from .MPCStrategy import MPCStrategy
+from .QualityValueMomentumStrategy import QualityValueMomentumStrategy
