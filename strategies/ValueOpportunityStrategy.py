@@ -57,5 +57,5 @@ class ValueOpportunityStrategy(BaseStrategy):
             'New Allocation': allocation,
             'New Portfolio': new_portfolio,
             'New Weights': new_portfolio / new_portfolio.sum(),
-            'Unused': np.minimum(0, target_portfolio - current_portfolio)
+            'Unused': new_capital - allocation.sum()
         }, index=self.tickers)

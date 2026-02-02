@@ -17,3 +17,5 @@ from .TrendFollowingStrategy import TrendFollowingStrategy
 from .VolatilityTargetingStrategy import VolatilityTargetingStrategy
 from .MPCStrategy import MPCStrategy
 from .QualityValueMomentumStrategy import QualityValueMomentumStrategy
+from .MeanReversionTrendStrategy import MeanReversionTrendStrategy
+from .TimeSeriesMeanReversionStrategy import TimeSeriesMeanReversionStrategy

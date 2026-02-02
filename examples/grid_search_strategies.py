@@ -27,7 +27,9 @@ from strategies import (
     ValueOpportunityStrategy,
     DualMomentumStrategy,
     TrendFollowingStrategy,
-    VolatilityTargetingStrategy
+    VolatilityTargetingStrategy,
+    MeanReversionTrendStrategy,
+    TimeSeriesMeanReversionStrategy
 )
 
 
@@ -59,7 +61,7 @@ tickers = [
     "GOOGL",    # Alphabet 
     "MSFT",     # Microsoft
     "TSM",      # TSMC
-    #"NVDA",     # Nvidia
+    #"NVDA",     # Nvidia (Unique case, ignore for evaluation)
     "AMD",      # AMD
     
     # Good performers
@@ -163,6 +165,21 @@ strategy_configs = {
             "long_window": [10, 12],
         },
     },
+    "MeanRevTrend": {
+        "class": MeanReversionTrendStrategy,
+        "param_grid": {
+            "mean_reversion_lookback": [3, 6, 9, 12],
+            "top_n": [1, 2, 3, 4, 5],
+        },
+    },
+    "TimeSeriesMeanRev": {
+        "class": TimeSeriesMeanReversionStrategy,
+        "param_grid": {
+            "mean_reversion_lookback": [1, 3, 6],
+            "history_lookback": [6, 12],
+            "top_n": [1, 2, 3, 4, 5],
+        },
+    },
     "VolTarget": {
         "class": VolatilityTargetingStrategy,
         "param_grid": {
@@ -230,16 +247,18 @@ def run_grid_search(strategy_name):
 
 
 strategies_to_run = [
-    "Momentum",
-    "MVO",
-    "RiskParity",
-    "MaxSharpe",
-    "MaxSortino",
-    "CVaR",
-    "Dual",
-    "Trend",
+    #"Momentum",
+    #"MVO",
+    #"RiskParity",
+    #"MaxSharpe",
+    #"MaxSortino",
+    #"CVaR",
+    #"Dual",
+    #"Trend",
+    #"MeanRevTrend",
+    "TimeSeriesMeanRev",
     #"VolTarget",
-    "ValueOpp",
+    #"ValueOpp",
 ]
 
 for name in strategies_to_run:

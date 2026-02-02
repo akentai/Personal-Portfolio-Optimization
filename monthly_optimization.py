@@ -22,7 +22,9 @@ from strategies import (
     CVaRStrategy,
     ValueOpportunityStrategy,
     DualMomentumStrategy, 
-    TrendFollowingStrategy
+    TrendFollowingStrategy,
+    MeanReversionTrendStrategy,
+    TimeSeriesMeanReversionStrategy
 )
 
 from data import DataLoader
@@ -76,9 +78,15 @@ monthly_cash = 1_000
 ######################################################################################
 
 strategies = [
-    ('MVO', MeanVarianceOptimizationStrategy(tickers, lookback=3, risk_aversion=1.0)),
     ('Momentum', MomentumStrategy(tickers, lookback=4, vol_threshold=0.4, diversification=False)),
-    ('DualMomentum', DualMomentumStrategy(tickers, lookback=12, top_fraction=0.5, weighting="momentum")),
+    ('DualMomentum', DualMomentumStrategy(tickers, lookback=12, top_fraction=0.5, weighting="equal")),
+    ('MeanRevTrend', MeanReversionTrendStrategy(
+        tickers,
+        mean_reversion_lookback=6,
+        skip_recent=0,
+        top_n=3
+    )),
+    ('TimeSeriesMean', TimeSeriesMeanReversionStrategy(tickers,mean_reversion_lookback=1,history_lookback=6,top_n=3))
 ]
 
 results = {}
